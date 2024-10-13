@@ -21,7 +21,7 @@ interface CustomProps {
   fieldType: FormFieldType;
   name: string;
   placeholder: string;
-  label: string;
+  label?: string;
   iconSrc?: string;
   iconAlt?: string;
   disable?: boolean;
