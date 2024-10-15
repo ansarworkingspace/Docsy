@@ -17,6 +17,8 @@ import "react-phone-number-input/style.css";
 import PhoneInput from "react-phone-number-input";
 import DatePicker from "react-datepicker";
 import "react-datepicker/dist/react-datepicker.css";
+import { Select, SelectContent, SelectTrigger } from "./ui/select";
+import { SelectValue } from "@radix-ui/react-select";
 
 interface CustomProps {
   control: Control<any>;
@@ -29,12 +31,20 @@ interface CustomProps {
   disable?: boolean;
   dateFormat?: string;
   showTimeSelect?: boolean;
-  childern?: React.ReactNode;
+  children?: React.ReactNode;
   renderSkeleton?: (field: any) => React.ReactNode;
 }
 
 const RenderField = ({ field, props }: { field: any; props: CustomProps }) => {
-  const { fieldType, iconSrc,renderSkeleton, iconAlt, placeholder,showTimeSelect, dateFormat } = props;
+  const {
+    fieldType,
+    iconSrc,
+    renderSkeleton,
+    iconAlt,
+    placeholder,
+    showTimeSelect,
+    dateFormat,
+  } = props;
 
   switch (fieldType) {
     case FormFieldType.INPUT:
@@ -92,22 +102,38 @@ const RenderField = ({ field, props }: { field: any; props: CustomProps }) => {
             <DatePicker
               selected={field.value}
               onChange={(date) => field.onChange(date)}
-              dateFormat={dateFormat ?? 'MM/DD/YYYY'}
+              dateFormat={dateFormat ?? "MM/DD/YYYY"}
               showTimeSelect={showTimeSelect ?? false}
               timeInputLabel="Time:"
               wrapperClassName="date-picker"
-           />
+            />
           </FormControl>
         </div>
       );
 
+    case FormFieldType.SELECT:
+      return (
+        <FormControl>
+          <Select onValueChange={field.onChange} defaultValue={field.value}>
+            <FormControl >
+              <SelectTrigger className="shad-select-trigger">
+              <SelectValue placeholder={placeholder} />
+              </SelectTrigger>
+            </FormControl>
+            <SelectContent className="shad-select-content">
+               {props.children}
+            </SelectContent>
+          </Select>
+        </FormControl>
+      );
+
+    case FormFieldType.CHECKBOX:
+
     case FormFieldType.SKELETON:
-      return renderSkeleton ? renderSkeleton 
-      (field) : null
+      return renderSkeleton ? renderSkeleton(field) : null;
 
-      default:
+    default:
       break;
-
   }
 };
 

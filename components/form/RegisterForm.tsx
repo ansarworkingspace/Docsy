@@ -188,14 +188,33 @@ const RegisterForm = ({ user }: { user: User }) => {
                 height={32}
                 width={32}
                 alt={doctor.name}
-                className="rounder-full border border-dark-500"
+                className="rounded-full border border-dark-500"
                 
                 />
+                <p className="text-white cursor-pointer">{doctor.name}</p>
               </div>
             </SelectItem>
           ))}
         </CustomFormField>
+       
+       
+        <div className="flex flex-col gap-6 xl:flex-row">
+        <CustomFormField
+            fieldType={FormFieldType.INPUT}
+            control={form.control}
+            name="insuranceProvider"
+            label="Insurance Provider"
+            placeholder="Medicare Pvt"
+          />
 
+          <CustomFormField
+            fieldType={FormFieldType.INPUT}
+            control={form.control}
+            name="insurancePolicyNumber"
+            label="Insurance Policy Number"
+            placeholder="INS123PRO"
+          />
+         </div>
         <SubmitButton isLoading={isLoading}>Get Started</SubmitButton>
       </form>
     </Form>
