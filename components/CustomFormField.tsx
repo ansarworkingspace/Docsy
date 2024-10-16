@@ -19,6 +19,7 @@ import DatePicker from "react-datepicker";
 import "react-datepicker/dist/react-datepicker.css";
 import { Select, SelectContent, SelectTrigger } from "./ui/select";
 import { SelectValue } from "@radix-ui/react-select";
+import { Textarea } from "./ui/textarea";
 
 interface CustomProps {
   control: Control<any>;
@@ -28,7 +29,7 @@ interface CustomProps {
   label?: string;
   iconSrc?: string;
   iconAlt?: string;
-  disable?: boolean;
+  disabled?: boolean;
   dateFormat?: string;
   showTimeSelect?: boolean;
   children?: React.ReactNode;
@@ -127,10 +128,20 @@ const RenderField = ({ field, props }: { field: any; props: CustomProps }) => {
         </FormControl>
       );
 
-    case FormFieldType.CHECKBOX:
-
     case FormFieldType.SKELETON:
       return renderSkeleton ? renderSkeleton(field) : null;
+
+    case FormFieldType.TEXTAREA:
+       return (
+        <FormControl>
+          <Textarea
+            placeholder={placeholder}
+            {...field}
+            className="shad-textarea  border-dark-500 bg-dark-400"
+            disabled={props.disabled}
+          />
+        </FormControl>
+       )
 
     default:
       break;
