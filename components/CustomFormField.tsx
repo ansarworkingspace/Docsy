@@ -20,6 +20,7 @@ import "react-datepicker/dist/react-datepicker.css";
 import { Select, SelectContent, SelectTrigger } from "./ui/select";
 import { SelectValue } from "@radix-ui/react-select";
 import { Textarea } from "./ui/textarea";
+import { Checkbox } from "./ui/checkbox";
 
 interface CustomProps {
   control: Control<any>;
@@ -116,23 +117,20 @@ const RenderField = ({ field, props }: { field: any; props: CustomProps }) => {
       return (
         <FormControl>
           <Select onValueChange={field.onChange} defaultValue={field.value}>
-            <FormControl >
+            <FormControl>
               <SelectTrigger className="shad-select-trigger">
-              <SelectValue placeholder={placeholder} />
+                <SelectValue placeholder={placeholder} />
               </SelectTrigger>
             </FormControl>
             <SelectContent className="shad-select-content">
-               {props.children}
+              {props.children}
             </SelectContent>
           </Select>
         </FormControl>
       );
 
-    case FormFieldType.SKELETON:
-      return renderSkeleton ? renderSkeleton(field) : null;
-
     case FormFieldType.TEXTAREA:
-       return (
+      return (
         <FormControl>
           <Textarea
             placeholder={placeholder}
@@ -141,7 +139,26 @@ const RenderField = ({ field, props }: { field: any; props: CustomProps }) => {
             disabled={props.disabled}
           />
         </FormControl>
-       )
+      );
+  
+    case FormFieldType.SKELETON:
+      return renderSkeleton ? renderSkeleton(field) : null;
+
+    case FormFieldType.CHECKBOX:
+      return (
+        <FormControl>
+          <div className="flex items-center gap-4">
+            <Checkbox
+              id={props.name}
+              checked={field.value}
+              onCheckedChange={field.onChange}
+            />
+            <label htmlFor={props.name} className="checkbox-label">
+              {props.label}
+            </label>
+          </div>
+        </FormControl>
+      );
 
     default:
       break;

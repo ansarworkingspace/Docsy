@@ -8,51 +8,80 @@ import { Form, FormControl } from "@/components/ui/form";
 import CustomFormField from "../CustomFormField";
 import SubmitButton from "../SubmitButton";
 import { useState } from "react";
-import { UserFormValidation } from "@/lib/validation";
-import { createUser } from "@/lib/actions/patient.actions";
+import { PatientFormValidation } from "@/lib/validation";
+import { createUser, registerPatient } from "@/lib/actions/patient.actions";
 import { FormFieldType } from "./PatientForm";
 import { RadioGroup, RadioGroupItem } from "@/components/ui/radio-group";
-import { Doctors, GenderOptions, IdentificationTypes } from "@/constants";
+import {
+  Doctors,
+  GenderOptions,
+  IdentificationTypes,
+  PatientFormDefaultValues,
+} from "@/constants";
 import { Label } from "../ui/label";
 import { SelectItem } from "../ui/select";
 import Image from "next/image";
 import FileUploader from "../FileUploader";
 
-
 const RegisterForm = ({ user }: { user: User }) => {
   const router = useRouter();
   const [isLoading, setIsLoading] = useState(false);
 
-  const form = useForm<z.infer<typeof UserFormValidation>>({
-    resolver: zodResolver(UserFormValidation),
+
+  const form = useForm<z.infer<typeof PatientFormValidation>>({
+    resolver: zodResolver(PatientFormValidation),
     defaultValues: {
+      ...PatientFormDefaultValues,
       name: "",
       email: "",
       phone: "",
     },
   });
 
-  const onSubmit = async (values: z.infer<typeof UserFormValidation>) => {
+  const onSubmit = async (values: z.infer<typeof PatientFormValidation>) => {
+   
+    console.log("helo i am from onsubmit");
+    
+   
     setIsLoading(true);
+    let formData;
+  
+    if (
+      values.identificationDocument &&
+      values.identificationDocument.length > 0
+    ) {
+      const blobFile = new Blob([values.identificationDocument[0]], {
+        type: values.identificationDocument[0].type,
+      });
+
+      formData = new FormData();
+      formData.append("blobFile", blobFile);
+      formData.append("fileName", values.identificationDocument[0].name);
+    }
 
     try {
-      const user = {
-        name: values.name,
-        email: values.email,
-        phone: values.phone,
+      const patientData = {
+        ...values,
+        userId: user.$id,
+        birthDate: new Date(values.birthDate),
+        identificationDocument: formData,
       };
 
-      const newUser = await createUser(user);
+      console.log("hi");
+      // @ts-ignore
+      const patient = await registerPatient(patientData)
+      console.log(patient,"patient");
+      
+      if(patient) router.push(`/patients/${user.$id}/new-appointment`)
 
-      if (newUser) {
-        router.push(`/patients/${newUser.$id}/register`);
-      }
     } catch (error) {
       console.log(error);
     }
 
     setIsLoading(false);
   };
+
+
 
   return (
     <Form {...form}>
@@ -291,9 +320,36 @@ const RegisterForm = ({ user }: { user: User }) => {
           label="Scanned copy of identification document"
           renderSkeleton={(field) => (
             <FormControl>
-             <FileUploader files={field.value} onChange={field.onChange}/>
+              <FileUploader files={field.value} onChange={field.onChange} />
             </FormControl>
           )}
+        />
+
+        <section className="space-y-6">
+          <div className="mb-9 space-y-1">
+            <h2 className="sub-header">Consent and Privacy</h2>
+          </div>
+        </section>
+
+        <CustomFormField
+          fieldType={FormFieldType.CHECKBOX}
+          control={form.control}
+          name="treatmentConsent"
+          label="I consent to treatment"
+        />
+
+        <CustomFormField
+          fieldType={FormFieldType.CHECKBOX}
+          control={form.control}
+          name="diclosureConsent"
+          label="I consent to disclosure of information"
+        />
+
+        <CustomFormField
+          fieldType={FormFieldType.CHECKBOX}
+          control={form.control}
+          name="privacyConsent"
+          label="I consent to privacy policy"
         />
 
         <SubmitButton isLoading={isLoading}>Get Started</SubmitButton>

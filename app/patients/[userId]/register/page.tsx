@@ -1,18 +1,16 @@
-import RegisterForm from '@/components/form/RegisterForm'
-import { getUser } from '@/lib/actions/patient.actions'
-import Image from 'next/image'
-import Link from 'next/link'
-import React from 'react'
+import RegisterForm from "@/components/form/RegisterForm";
+import { getUser } from "@/lib/actions/patient.actions";
+import Image from "next/image";
+import Link from "next/link";
+import React from "react";
 
-const Register = async ({params : {userId}}:SearchParamProps) => {
-   const user = await getUser(userId)
-
+const Register = async ({ params: { userId } }: SearchParamProps) => {
+  const user = await getUser(userId);
 
   return (
     <div className="flex h-screen max-h-screen">
-     
-      <section className="remove-scrollbar container my-auto">
-        <div className="sub-container max-w-[496px]">
+      <section className="remove-scrollbar container ">
+        <div className="sub-container max-w-[860px] flex-1 flex-col py-10">
           <Image
             src="/assets/icons/logo-full.svg"
             height={1000}
@@ -21,16 +19,11 @@ const Register = async ({params : {userId}}:SearchParamProps) => {
             className="mb-12 h-10 w-fit"
           />
 
-          <RegisterForm user={user}/>
+          <RegisterForm user={user} />
 
-          <div className="text-14-regular mt-20 flex justify-between">
-            <p className="justify-items-end text-dark-600 xl:text-left">
-              © 2024 CarePulse
-            </p>
-            <Link href="/?admin=true" className="text-green-500">
-              Admin
-            </Link>
-          </div>
+          <p className="copyright py-12">
+            © 2024 CarePulse
+          </p>
         </div>
       </section>
       <Image
@@ -41,9 +34,7 @@ const Register = async ({params : {userId}}:SearchParamProps) => {
         className="side-img max-w-[390px]"
       />
     </div>
-  )
-}
+  );
+};
 
-export default Register
-
-
+export default Register;
