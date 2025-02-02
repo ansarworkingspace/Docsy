@@ -1,5 +1,4 @@
-import PatientForm from "@/components/form/PatientForm";
-import { Button } from "@/components/ui/button";
+import {PatientForm} from "@/components/form/patientForm";
 import Image from "next/image";
 import Link from "next/link";
 
