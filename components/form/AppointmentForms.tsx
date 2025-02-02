@@ -19,15 +19,20 @@ import Image from "next/image";
 import "react-datepicker/dist/react-datepicker.css";
 import { createAppointment } from "@/lib/actions/appointment.actions";
 import { SelectItem } from "../ui/select";
+import { Appointment } from "@/types/appwrite.types";
 
 const AppointmentForm = ({
   userId,
   patientId,
   type,
+  appointment,
+  setOpen,
 }: {
   userId: string;
   patientId: string;
   type: "create" | "cancel" | "schedule";
+  appointment?: Appointment;
+  setOpen: (open: boolean) => void;
 }) => {
   const router = useRouter();
   const [isLoading, setIsLoading] = useState(false);
@@ -84,6 +89,11 @@ const AppointmentForm = ({
           );
         }
       }
+
+
+
+
+      
     } catch (error) {
       console.log(error);
     }
@@ -109,7 +119,7 @@ const AppointmentForm = ({
         onSubmit={form.handleSubmit(onSubmit)}
         className="flex-1 space-y-6 text-white"
       >
-         {type === "create" && (
+        {type === "create" && (
           <section className="mb-12 space-y-4">
             <h1 className="header">New Appointment</h1>
             <p className="text-dark-700">
