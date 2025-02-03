@@ -1,23 +1,14 @@
 "use client";
 
 import { ColumnDef } from "@tanstack/react-table";
-
-import { Button } from "../ui/button";
-import { MoreHorizontal } from "lucide-react";
 import { formatDateTime } from "@/lib/utils";
 import { Doctors } from "@/constants";
 import Image from "next/image";
 import { StatusBadge } from "../StatusBadge";
 import { AppointmentModal } from "../AppointmentModal";
+import { Appointment } from "@/types/appwrite.types";
 
-export type Payment = {
-  id: string;
-  amount: number;
-  status: "pending" | "processing" | "success" | "failed";
-  email: string;
-};
-
-export const columns: ColumnDef<Payment>[] = [
+export const columns: ColumnDef<Appointment>[] = [
   {
     accessorKey: "patient",
     header: "Patient",
@@ -84,7 +75,7 @@ export const columns: ColumnDef<Payment>[] = [
             type="schedule"
             patientId={data.patient.$id}
             userId={data.userId}
-            appointmentId={data}
+            appointment={data}
            
           />
 
@@ -92,7 +83,7 @@ export const columns: ColumnDef<Payment>[] = [
             type="cancel"
             patientId={data.patient.$id}
             userId={data.userId}
-            appointmentId={data}
+            appointment={data}
            
           />
         </div>

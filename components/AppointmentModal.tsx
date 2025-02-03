@@ -13,25 +13,28 @@ import { Button } from "./ui/button";
 import AppointmentForm from "./form/AppointmentForms";
 import { Appointment } from "@/types/appwrite.types";
 
+import "react-datepicker/dist/react-datepicker.css";
+
 export const AppointmentModal = ({
-    patientId,
-    userId,
-    appointment,
-    type,
-  }: {
-    patientId: string;
-    userId: string;
-    appointment?: Appointment;
-    type: "schedule" | "cancel";
-    title: string;
-    description: string;
-  }) => {
+  patientId,
+  userId,
+  appointment,
+  type,
+}: {
+  patientId: string;
+  userId: string;
+  appointment?: Appointment;
+  type: "create" | "schedule" | "cancel";
+}) => {
   const [open, setOpen] = useState(false);
   return (
     <Dialog open={open} onOpenChange={setOpen}>
       <DialogTrigger asChild>
-        <Button variant="ghost" className={`capitalize ${type === "schedule" && "text-green-500"}`}>
-{type}
+        <Button
+          variant="ghost"
+          className={`capitalize ${type === "schedule" && "text-green-500"}`}
+        >
+          {type}
         </Button>
       </DialogTrigger>
       <DialogContent className="shad-dialog  sm:max-w-md">
@@ -42,19 +45,14 @@ export const AppointmentModal = ({
           </DialogDescription>
         </DialogHeader>
 
-<AppointmentForm
-userId={userId}
-patientId={patientId}
-type={type}
-appointment={appointment}
-setOpen={setOpen}
-
-/>
-
-
-
+        <AppointmentForm
+          userId={userId}
+          patientId={patientId}
+          type={type}
+          appointment={appointment}
+          setOpen={setOpen}
+        />
       </DialogContent>
     </Dialog>
   );
 };
-
