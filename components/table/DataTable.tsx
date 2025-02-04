@@ -80,7 +80,7 @@ export function DataTable<TData, TValue>({
         </TableBody>
       </Table>
 
-      <div className="table-actions">
+      <div className="table-actions cursor-pointer">
         <Button
           variant="outline"
           size="sm"
@@ -102,7 +102,7 @@ export function DataTable<TData, TValue>({
           size="sm"
           onClick={() => table.nextPage()}
           disabled={!table.getCanNextPage()}
-          className="shad-gray-btn"
+          className="shad-gray-btn "
         >
           <Image
           src="/assets/icons/arrow.svg"
